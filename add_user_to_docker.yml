@@ -1,0 +1,13 @@
+# add_user_to_docker.yml
+---
+- name: Add Robadmin to Docker Group
+  hosts: linux
+  become: yes
+
+  tasks:
+    - name: Add 'robadmin' to the existing 'docker' group
+      ansible.builtin.user:
+        name: robadmin
+        groups: docker
+        append: yes
+        state: present

@@ -1,0 +1,16 @@
+all:
+  children:
+    linux:
+      hosts:
+        ubuntu-501:
+          ansible_host: 192.168.20.134
+          ansible_user: robadmin    # <-- New non-root user for connecting
+          ansible_become: yes         # <-- Use 'sudo' for admin tasks
+        ubuntu-502:
+          ansible_host: 192.168.20.133
+          ansible_user: robadmin
+          ansible_become: yes
+        ubuntu-503:
+          ansible_host: 192.168.20.132
+          ansible_user: robadmin
+          ansible_become: yes

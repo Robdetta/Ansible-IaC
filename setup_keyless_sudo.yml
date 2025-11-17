@@ -1,0 +1,14 @@
+# setup_keyless_sudo.yml
+---
+- name: Enable Passwordless Sudo for Robadmin
+  hosts: linux
+  become: yes # Required to write to /etc/sudoers.d/
+
+  tasks:
+    - name: Configure robadmin for NOPASSWD sudo
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers.d/99-robadmin-keyless-sudo
+        line: 'robadmin ALL=(ALL) NOPASSWD: ALL'
+        state: present
+        create: yes
+        validate: 'visudo -cf %s' # Ensures syntax is correct

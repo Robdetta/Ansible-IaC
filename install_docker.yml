@@ -1,0 +1,44 @@
+# install_docker.yml
+---
+- name: Install Docker and Dependencies on LXCs
+  hosts: linux
+  become: yes # Use 'sudo' (enabled by ansible_become: yes in inventory)
+
+  tasks:
+    - name: 1. Install prerequisites
+      ansible.builtin.apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - lsb-release
+        state: present
+        update_cache: yes
+      
+    - name: 2. Add Docker's official GPG key
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+        
+    - name: 3. Set up the stable Docker repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+        
+    - name: 4. Install Docker CE and related tools
+      ansible.builtin.apt:
+        name: 
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: present
+        update_cache: yes
+
+    - name: 5. Ensure Docker service is running and enabled
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: yes

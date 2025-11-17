@@ -1,0 +1,20 @@
+---
+- name: Create Non-Root Admin User
+  hosts: linux
+  become: yes # Run as root
+
+  tasks:
+    - name: Ensure 'robadmin' user exists
+      ansible.builtin.user:
+        name: robadmin
+        state: present
+        password: "$6$rounds=656000$dHn4J/pWUkftg48w$OCcOm3vyu264z.E.taV2R8UFRjuVTIo083iOfNaXqJLPo4zfZDhHzNpVBowEU4PuVBjkPE2aTxShrPHNR9BWM1" # Set a secure password
+        shell: /bin/bash
+        groups: sudo, #docker # Add to sudo and Docker group (if Docker is installed)
+        append: yes
+        
+    - name: Deploy SSH Public Key for passwordless access (Optional but secure)
+      ansible.posix.authorized_key:
+        user: robadmin
+        state: present
+        key: "{{ lookup('file', '~/ansible/ansible_key.pub') }}"
