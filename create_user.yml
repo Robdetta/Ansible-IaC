@@ -8,7 +8,7 @@
       ansible.builtin.user:
         name: robadmin
         state: present
-        password: "$6$rounds=656000$dHn4J/pWUkftg48w$OCcOm3vyu264z.E.taV2R8UFRjuVTIo083iOfNaXqJLPo4zfZDhHzNpVBowEU4PuVBjkPE2aTxShrPHNR9BWM1" # Set a secure password
+        password: "$VAR" # Set a secure password
         shell: /bin/bash
         groups: sudo, #docker # Add to sudo and Docker group (if Docker is installed)
         append: yes
